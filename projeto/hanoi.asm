@@ -102,6 +102,10 @@ string_inicio:
     db "Torre de hanoi com tres discos", 0xa, 0 ; 0xa = newline, 0 = end of a C string.
 
 _print_mover:
+    push string_mover  ;inserindo à pilha a string a ser impressa
+    extern printf       ;chamada da função em C, já que windows não permite comando int
+    call printf         ;itera sobre o topo da pilha e imprime a string
+    pop edx             ;remove a string da pilha
     ret
 
 string_mover:
