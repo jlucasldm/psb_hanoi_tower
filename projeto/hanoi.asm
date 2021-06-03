@@ -90,13 +90,28 @@ _ret:
 
 
 _print_inicio:
+    push string_inicio  ;inserindo à pilha a string a ser impressa
+    extern printf       ;chamada da função em C, já que windows não permite comando int
+    call printf         ;itera sobre o topo da pilha e imprime a string
+    pop edx             ;remove a string da pilha
     ret
+
+string_inicio:
+    db "Torre de hanoi com três discos", 0xa, 0 ; 0xa = newline, 0 = end of a C string.
 
 _print_mover:
     ret
 
 _print_final:
+    push string_final  ;inserindo à pilha a string a ser impressa
+    extern printf       ;chamada da função em C, já que windows não permite comando int
+    call printf         ;itera sobre o topo da pilha e imprime a string
+    pop edx             ;remove a string da pilha
     ret
+
+string_final:
+    db "Procedimento solucionado", 0xa, 0 ; 0xa = newline, 0 = end of a C string.
+
 
 _quit:
     mov       rax, 60                

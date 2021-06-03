@@ -1,31 +1,32 @@
-;; bits 64
+%include "io.inc"
 default rel
 
 extern printf, scanf
 
 section .text
-    global main
+    global CMAIN
     global hanoi
-main:
+CMAIN:
     mov rbp, rsp; for correct debugging
-    sub     rsp, 56
-    lea     rcx, [prompt]
-    call    printf
-    lea     rdx, [rsp+32]
-    lea     rcx, [scan_fmt]
-    call    scanf
-    cmp     eax, 1
-    jz      .call_hanoi
-    lea     rcx, [scan_fail]
-    call    printf
+    ;sub     rsp, 56
+    ;lea     rcx, [prompt]
+    ;call    printf
+    ;lea     rdx, [rsp+32]
+    ;lea     rcx, [scan_fmt]
+    ;call    scanf
+    ;cmp     eax, 1
+    ;jz      .call_hanoi
+    ;lea     rcx, [scan_fail]
+    ;call    printf
     mov     eax, 1                      ; return 1
 .end:
     add     rsp, 56
     ret
 .call_hanoi:
-    mov     ecx, dword [rsp+32]         ; ecx = num_disks
-    mov     r9d, 3                      ; r9d = tmp
-    mov     r8d, 2                      ; r8d = dst
+    ;mov     ecx, dword [rsp+32]         ; ecx = num_disks
+    mov     ecx, 3;
+    mov     r9, 3                      ; r9d = tmp
+    mov     r8, 2                      ; r8d = dst
     mov     edx, 1                      ; edx = src
     call    hanoi                       ; hanoi(num_disks, src, dst, tmp)
     xor     eax, eax                    ; return 0
@@ -41,18 +42,20 @@ hanoi:
 
     mov     ebx, ecx                    ; ECX=2+
     mov     esi, edx                    ; esi = edx = src
-    mov     edi, r9d                    ; edi = r9d = tmp
-    mov     r12d, r8d                   ; r12d = r8d = dst
+    mov     edi, r9                    ; edi = r9d = tmp
+    mov     r12, r8                   ; r12d = r8d = dst
 
 .move_disk:
-    mov     r9d, r12d                   ; dst
-    mov     r8d, edi                    ; tmp
+    mov     r9, r12                   ; dst
+    mov     r8, edi                    ; tmp
     mov     edx, esi                    ; src
-    lea     ecx, [rbx - 1]              ; num_disks - 1
+    ;lea     ecx, [rbx-1]              ; num_disks - 1
+    mov     ecx, rbx
+    sub     ecx, 1
     call    hanoi                       ; tmp & dst are swapped for this call
 
-    mov     r9d, r12d                   ; the 'to' peg
-    mov     r8d, esi                    ; the 'from' peg
+    mov     r9, r12                   ; the 'to' peg
+    mov     r8, esi                    ; the 'from' peg
     mov     edx, ebx                    ; num_disks
     lea     rcx, [prompt_move_disk]
     sub     rsp, 32                     ;shadow space
@@ -67,7 +70,7 @@ hanoi:
     cmp     ebx, 1                      ; if num_disks == 1
     jne     .move_disk
 
-    mov     r8d, r12d                   ; the 'to' peg
+    mov     r8, r12                   ; the 'to' peg
     mov     edx, esi                    ; the 'from' peg
 
     pop     r12
