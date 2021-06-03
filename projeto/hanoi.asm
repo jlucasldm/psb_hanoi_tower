@@ -38,7 +38,9 @@ _start:
     
 
     ; Executando a função recursiva
+    call _print_inicio
     call _hanoi    
+    call _print_final
     call _quit
     
 
@@ -97,10 +99,13 @@ _print_inicio:
     ret
 
 string_inicio:
-    db "Torre de hanoi com três discos", 0xa, 0 ; 0xa = newline, 0 = end of a C string.
+    db "Torre de hanoi com tres discos", 0xa, 0 ; 0xa = newline, 0 = end of a C string.
 
 _print_mover:
     ret
+
+string_mover:
+    db "Movendo o disco %d da torre %d para a torre %d",0xa,0 ; 0xa = newline, 0 = end of a C string.
 
 _print_final:
     push string_final  ;inserindo à pilha a string a ser impressa
